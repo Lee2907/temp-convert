@@ -1,85 +1,92 @@
-import tkinter as tk
-from tkinter import LabelFrame, Button, Entry, END, messagebox
+# importing the tkinter module
+
+import tkinter
+
+root = tkinter.Tk()   # creating a window
+root.title("Temperature Converter")   # naming the recently created window
+root.geometry("620x500")   #  setting the size of the window
+root.config(bg="salmon1")   # setting the background color for the window
+
+l1 = tkinter.LabelFrame(root, text="Celsius to Farenheit", padx=20, pady=20)
+l1.grid(row=2, column=0)
+
+e1 = tkinter.Entry(l1, state="disable")
+e1. grid(row=4, column=0)
+
+# setting the state for Celsius
+def cel_active():
+    e2.configure(state='disable')
+    e1.configure(state="normal")
 
 
-temp = tk.Tk()
+btn_active = tkinter.Button(root, text="Active -Celsius to Fahrenheit", command=cel_active)
+btn_active.grid(row=6, column=0)
 
-temp.title("Temperature Convertor App")
-temp.geometry("530x300")
-temp.config(bg="salmon2")
+l2 = tkinter.LabelFrame(root, text="Fahrenheit to Celsius", padx=20, pady=20)
+l2.grid(row=2, column=5)
 
-celsius_label_frame = LabelFrame(temp, text="Celsius to Fahrenheit")
-fahrenheit_label_frame = LabelFrame(temp, text="Fahrenheit to Celsius")
-
-celsius_entry = Entry(celsius_label_frame, width=10, state="readonly")
-celsius_entry.place(x=45, y=25)
-
-fahrenheit_entry = Entry(fahrenheit_label_frame, width=10, state="readonly")
-fahrenheit_entry.place(x=45, y=25)
-
-celsius_label_frame.place(x=50, y=60, height=100, width=180)
-fahrenheit_label_frame.place(x=300, y=60, height=100, width=180)
+e2 = tkinter.Entry(l2, state="disable")
+e2.grid(row=4, column=5)
 
 
-def clear_fields():
-    celsius_entry.delete(0, END)
-    fahrenheit_entry.delete(0, END)
-    results_entry.delete(0, END)
+# setting the state for Fahrenheit
+def far_active():
+    e1.configure(state="disable")
+    e2.configure(state="normal")
 
 
-def temperature_conversion():
-
-    if celsius_entry['state'] == "normal" and celsius_entry.get() != "":
-        to_fahrenheit = float(celsius_entry.get()) * 9/5 + 32
-        results_entry.delete(0, END)
-        results_entry.insert(0, to_fahrenheit)
-    elif fahrenheit_entry['state'] == "normal" and fahrenheit_entry.get() != "":
-        to_celsius = (float(fahrenheit_entry.get()) - 32) * 5/9
-        results_entry.delete(0, END)
-        results_entry.insert(0, to_celsius)
-    else:
-        return None
+btn_active1 =tkinter.Button(root, text="Active -Fahrenheit to Celsius", command=far_active)
+btn_active1.grid(row=6, column=5)
 
 
-def exit_program():
-    msg_box = messagebox.askquestion("Exit Application", "Are you sure you want to exit the application", icon='warning')
-    if msg_box == "yes":
-        gui.destroy()
-    else:
-        messagebox.showinfo("Return", "You will now return to the App", icon="warning")
-
-def activate_celsius_entry():
-    if celsius_entry['state'] == "normal":
-        celsius_entry.config(state="disabled")
-    else:
-        celsius_entry.config(state="normal")
-        fahrenheit_entry.config(state="disabled")
+# defining function that will exit/ close the window/ program
+def close():
+    root.destroy()
 
 
-def activate_fahrenheit_entry():
-    if fahrenheit_entry['state'] == "normal":
-        fahrenheit_entry.config(state="disabled")
-    else:
-        fahrenheit_entry.config(state="normal")
-        celsius_entry.config(state="disabled")
+exit_btn = tkinter.Button(text="Exit Program", command=close)
+exit_btn.grid(row=9, column=6)
 
 
-activate_celsius_btn = Button(temp, text="Activate C to F", command=activate_celsius_entry)
-activate_celsius_btn.place(x=80, y=170)
+# defining function for converting celsius to fahrenheit
+def convert_C():
+    if e1["state"] == "normal" and e1.get() != "":
+        celsius = float(e1.get())
+        fahrenheit = (celsius*9/5)+32
+        result_entry.insert(0, str(fahrenheit))
 
-activate_fahrenheit_btn = Button(temp, text="Activate F to C", command=activate_fahrenheit_entry)
-activate_fahrenheit_btn.place(x=330, y=170)
 
-convert_button = Button(temp, text="Convert", command=temperature_conversion)
-convert_button.place(x=130, y=240)
+# defining function for converting fahrenheit to celsius
+def convert_f():
+    if e2["state"] == "normal" and e2.get() != "":
+        fahrenheit = float(e2.get())
+        celsius = (fahrenheit-32)*5/9
+        result_entry.insert(0, celsius)
 
-results_entry = Entry(temp, bg="green", width=10)
-results_entry.place(x=220, y=240, height=29.5)
 
-clear_button = Button(temp, text="Clear", command=clear_fields)
-clear_button.place(x=340, y=240)
+result_btn = tkinter.Button(root, text="Convert C-F", command=convert_C)
+result_btn.grid(row=7, column=2)
 
-exit_button = Button(temp, text="Exit", command=exit_program)
-exit_button.place(x=440, y=240)
 
-temp.mainloop()
+# creating the action button for converting Fahrenheit to Celsius and calling the convert_f()
+result_btn2 = tkinter.Button(root, text="Convert F-C", command=convert_f)
+result_btn2.grid(row=7, column=4)
+
+
+# creating the result_entry or output entry
+result_entry = tkinter.Entry(root, bg="#f37683")
+result_entry.grid(row=8, column=2)
+
+# defining function that will delete the figure in the Entry box/ input box
+def clear():
+    e1.delete(0)
+    e2.delete(0)
+    result_entry.delete(0)
+
+
+# creating the Clear button and calling the clear()
+clear_btn = tkinter.Button(root, text="Clear", command=clear)
+clear_btn.grid(row=8, column=6)
+
+# starting the app
+root.mainloop()
